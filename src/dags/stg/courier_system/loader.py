@@ -149,7 +149,14 @@ class Loader:
                 for i, d in enumerate(load_queue):
                     self.pg_saver.save_delivery(conn, d)
 
-                max_delivery_ts_str = max([t['delivery_ts'] for t in load_queue])
+                max_delivery_ts_str = max(
+                    [
+                        datetime.strptime(
+                            t['delivery_ts'],
+                            '%Y-%m-%d %H:%M:%S.%f' if '.' in t['delivery_ts'] else '%Y-%m-%d %H:%M:%S'
+                        ) for t in load_queue
+                    ]
+                ).strftime('%Y-%m-%d %H:%M:%S')
 
             wf_setting.workflow_settings[last_delivery_ts_key] = max_delivery_ts_str
             wf_setting_json = json2str(wf_setting.workflow_settings)

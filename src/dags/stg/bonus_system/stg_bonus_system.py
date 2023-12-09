@@ -4,7 +4,7 @@ from stg.bonus_system.loaders import RankLoader, UserLoader, EventLoader
 
 
 @dag(
-    schedule_interval='0 * * * *',
+    schedule_interval='0,30 * * * *',
     start_date=pendulum.datetime(2022, 5, 5, tz='UTC'),
     catchup=False,
     tags=['sprint5', 'stg', 'origin'],

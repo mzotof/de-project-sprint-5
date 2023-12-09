@@ -32,6 +32,7 @@ with temp as (
     on o.timestamp_id = t.id
     left join dds.fct_product_sales fps
     on o.id = fps.order_id
+    where t.date between date_trunc('month', date'{current_date}' - interval '1' month)::date and date_trunc('month', date'{current_date}')::date - 1
     group by c.courier_id, c.courier_name, t.year, t.month
 )
 select

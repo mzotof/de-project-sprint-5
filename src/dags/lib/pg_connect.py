@@ -75,9 +75,12 @@ class TableBuilder:
         self._db = pg or ConnectionBuilder.pg_conn('PG_WAREHOUSE_CONNECTION')
         self.log = log or logging.getLogger(__name__)
 
-    def build_table(self, table_name: str) -> None:
+    def build_table(self, table_name: str, current_date: str = None) -> None:
         self.log.info(f'Building table {table_name}')
         script = self.sql_path.joinpath(f'{table_name}.sql').read_text()
+        if current_date is not None:
+            script = script.format(current_date=current_date)
+        print(script)
         with self._db.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(script)
